@@ -15,4 +15,5 @@ engine = create_async_engine(
 class Base(DeclarativeBase):
     pass
 
+
 session = async_sessionmaker(engine)

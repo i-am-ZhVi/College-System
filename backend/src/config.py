@@ -1,15 +1,13 @@
+from pydantic import Field
 from pydantic_settings import BaseSettings, SettingsConfigDict
-from dotenv import load_dotenv
-
-load_dotenv()
 
 
 class Settings(BaseSettings):
-    DB_HOST: str
-    DB_PORT: int
-    DB_USER: str
-    DB_PASS: str
-    DB_NAME: str
+    DB_HOST: str = Field(default="localhost")
+    DB_PORT: int = Field(default=5432)
+    DB_USER: str = Field(default="postgres")
+    DB_PASS: str = Field(default="postgres")
+    DB_NAME: str = Field(default="None")
 
 
     @property
