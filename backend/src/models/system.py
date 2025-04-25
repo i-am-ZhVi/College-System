@@ -84,7 +84,7 @@ class Specialties(Base):
 
     id: Mapped[my_id]
     weekly_day: Mapped[Days]
-    teacher_id: Mapped[int] = mapped_column(ForeignKey("teacher.id", ondelete="CASCADE"))
+    teacher_id: Mapped[int] = mapped_column(ForeignKey("person.id", ondelete="CASCADE"))
     group_id: Mapped[int] = mapped_column(ForeignKey("group.id", ondelete="CASCADE"))
     item_id: Mapped[int] = mapped_column(ForeignKey("item.id", ondelete="CASCADE"))
     number_couple: Mapped[int]
@@ -97,7 +97,7 @@ class Professions(Base):
 
     id: Mapped[my_id]
     weekly_day: Mapped[Days]
-    teacher_id: Mapped[int] = mapped_column(ForeignKey("teacher.id", ondelete="CASCADE"))
+    teacher_id: Mapped[int] = mapped_column(ForeignKey("person.id", ondelete="CASCADE"))
     group_id: Mapped[int] = mapped_column(ForeignKey("group.id", ondelete="CASCADE"))
     item_id: Mapped[int] = mapped_column(ForeignKey("item.id", ondelete="CASCADE"))
     number_couple: Mapped[int]
@@ -110,7 +110,7 @@ class Substitutions_Specialties(Base):
 
     id: Mapped[int] = mapped_column(ForeignKey("specialties.id", ondelete="CASCADE"), primary_key=True)
     weekly_day: Mapped[Days]
-    teacher_id: Mapped[int] = mapped_column(ForeignKey("teacher.id", ondelete="CASCADE"))
+    teacher_id: Mapped[int] = mapped_column(ForeignKey("person.id", ondelete="CASCADE"))
     group_id: Mapped[int] = mapped_column(ForeignKey("group.id", ondelete="CASCADE"))
     item_id: Mapped[int] = mapped_column(ForeignKey("item.id", ondelete="CASCADE"))
     number_couple: Mapped[int]
@@ -123,7 +123,7 @@ class Substitutions_Professions(Base):
 
     id: Mapped[int] = mapped_column(ForeignKey("professions.id", ondelete="CASCADE"), primary_key=True)
     weekly_day: Mapped[Days]
-    teacher_id: Mapped[int] = mapped_column(ForeignKey("teacher.id", ondelete="CASCADE"))
+    teacher_id: Mapped[int] = mapped_column(ForeignKey("person.id", ondelete="CASCADE"))
     group_id: Mapped[int] = mapped_column(ForeignKey("group.id", ondelete="CASCADE"))
     item_id: Mapped[int] = mapped_column(ForeignKey("item.id", ondelete="CASCADE"))
     number_couple: Mapped[int]
