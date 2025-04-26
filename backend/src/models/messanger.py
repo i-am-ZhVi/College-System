@@ -1,3 +1,5 @@
+import enum
+
 from sqlalchemy.orm import mapped_column
 from sqlalchemy.orm.base import Mapped
 from sqlalchemy.schema import ForeignKey
@@ -15,6 +17,7 @@ class Chat(Base):
     creator_id: Mapped[int] = mapped_column(ForeignKey("person.id", ondelete="CASCADE"))
     name: Mapped[str]
     description: Mapped[str]
+
 
 class Channel(Base):
     __tablename__ = "channel"
@@ -51,11 +54,10 @@ class Message(Base):
 
 
 
-class File_Type(Base):
-    __tablename__ = "file_type"
-
-    id: Mapped[my_id]
-    type: Mapped[str]
+class File_Type(enum.Enum):
+    image = "image"
+    text = "text"
+    video = "video"
 
 
 class File(Base):
@@ -64,4 +66,4 @@ class File(Base):
     id: Mapped[my_id]
     message_id: Mapped[int] = mapped_column(ForeignKey("message.id", ondelete="CASCADE"))
     path: Mapped[str]
-    type_id: Mapped[int] = mapped_column(ForeignKey("file_type.id", ondelete="CASCADE"))
+    type_id: Mapped[File_Type] = mapped_column(nullable=True)

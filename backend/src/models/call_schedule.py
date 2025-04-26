@@ -1,6 +1,7 @@
 
 from datetime import datetime
 from sqlalchemy.orm import mapped_column, Mapped
+from sqlalchemy.sql import expression
 from database import Base
 
 
@@ -29,5 +30,5 @@ class Change_Time_Couple(Base):
     number_couple: Mapped[int] = mapped_column(primary_key=True)
     start_time: Mapped[str]
     end_time: Mapped[str]
-    saturday: Mapped[bool] = mapped_column(default=False)
-    all_days: Mapped[bool] = mapped_column(default=False)
+    saturday: Mapped[bool] = mapped_column(default=False, server_default=expression.false())
+    all_days: Mapped[bool] = mapped_column(default=False, server_default=expression.false())

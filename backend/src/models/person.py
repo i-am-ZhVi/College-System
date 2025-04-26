@@ -23,7 +23,7 @@ class Person(Base):
     name: Mapped[str]
     patronymic: Mapped[str] = mapped_column(nullable=True)
     phone: Mapped[str] = mapped_column(nullable=True)
-    role: Mapped[Role] = mapped_column(default=Role.student)
+    role: Mapped[Role] = mapped_column(default=Role.student, server_default="student")
 
 
 class Login(Base):

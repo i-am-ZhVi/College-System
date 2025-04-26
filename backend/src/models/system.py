@@ -2,6 +2,7 @@ import enum
 
 from typing import Annotated
 from sqlalchemy.orm import Mapped, mapped_column
+from sqlalchemy.sql import expression
 from sqlalchemy.sql.schema import ForeignKey
 from database import Base
 from datetime import datetime
@@ -47,8 +48,8 @@ class Group(Base):
 
     id: Mapped[my_id]
     name: Mapped[str]
-    professions: Mapped[bool] = mapped_column(default=False)
-    denominator: Mapped[bool] = mapped_column(default=False)
+    professions: Mapped[bool] = mapped_column(default=False, server_default=expression.false())
+    denominator: Mapped[bool] = mapped_column(default=False, server_default=expression.false())
 
 
 class Student_to_Group(Base):
@@ -56,7 +57,7 @@ class Student_to_Group(Base):
 
     person_id: Mapped[int] = mapped_column(ForeignKey("person.id", ondelete="CASCADE"), primary_key=True)
     group_id: Mapped[int] = mapped_column(ForeignKey("group.id", ondelete="CASCADE"), primary_key=True)
-    is_elder: Mapped[bool] = mapped_column(default=False)
+    is_elder: Mapped[bool] = mapped_column(default=False, server_default=expression.false())
 
 
 class Teacher_to_Group(Base):
@@ -64,7 +65,7 @@ class Teacher_to_Group(Base):
 
     person_id: Mapped[int] = mapped_column(ForeignKey("person.id", ondelete="CASCADE"), primary_key=True)
     group_id: Mapped[int] = mapped_column(ForeignKey("group.id", ondelete="CASCADE"), primary_key=True)
-    is_master: Mapped[bool] = mapped_column(default=False)
+    is_master: Mapped[bool] = mapped_column(default=False, server_default=expression.false())
 
 
 class Item_for_Group(Base):
@@ -88,8 +89,8 @@ class Specialties(Base):
     group_id: Mapped[int] = mapped_column(ForeignKey("group.id", ondelete="CASCADE"))
     item_id: Mapped[int] = mapped_column(ForeignKey("item.id", ondelete="CASCADE"))
     number_couple: Mapped[int]
-    distance: Mapped[bool] = mapped_column(default=False)
-    denominator: Mapped[bool] = mapped_column(default=False)
+    distance: Mapped[bool] = mapped_column(default=False, server_default=expression.false())
+    denominator: Mapped[bool] = mapped_column(default=False, server_default=expression.false())
 
 
 class Professions(Base):
@@ -101,8 +102,8 @@ class Professions(Base):
     group_id: Mapped[int] = mapped_column(ForeignKey("group.id", ondelete="CASCADE"))
     item_id: Mapped[int] = mapped_column(ForeignKey("item.id", ondelete="CASCADE"))
     number_couple: Mapped[int]
-    distance: Mapped[bool] = mapped_column(default=False)
-    denominator: Mapped[bool] = mapped_column(default=False)
+    distance: Mapped[bool] = mapped_column(default=False, server_default=expression.false())
+    denominator: Mapped[bool] = mapped_column(default=False, server_default=expression.false())
 
 
 class Substitutions_Specialties(Base):
@@ -114,8 +115,8 @@ class Substitutions_Specialties(Base):
     group_id: Mapped[int] = mapped_column(ForeignKey("group.id", ondelete="CASCADE"))
     item_id: Mapped[int] = mapped_column(ForeignKey("item.id", ondelete="CASCADE"))
     number_couple: Mapped[int]
-    distance: Mapped[bool] = mapped_column(default=False)
-    denominator: Mapped[bool] = mapped_column(default=False)
+    distance: Mapped[bool] = mapped_column(default=False, server_default=expression.false())
+    denominator: Mapped[bool] = mapped_column(default=False, server_default=expression.false())
 
 
 class Substitutions_Professions(Base):
@@ -127,5 +128,5 @@ class Substitutions_Professions(Base):
     group_id: Mapped[int] = mapped_column(ForeignKey("group.id", ondelete="CASCADE"))
     item_id: Mapped[int] = mapped_column(ForeignKey("item.id", ondelete="CASCADE"))
     number_couple: Mapped[int]
-    distance: Mapped[bool] = mapped_column(default=False)
-    denominator: Mapped[bool] = mapped_column(default=False)
+    distance: Mapped[bool] = mapped_column(default=False, server_default=expression.false())
+    denominator: Mapped[bool] = mapped_column(default=False, server_default=expression.false())
