@@ -27,15 +27,16 @@ class Item(Base):
 
     id: Mapped[my_id]
     name: Mapped[str]
-    post: Mapped[int] = mapped_column(ForeignKey("post.id", ondelete="CASCADE"))
+    post_id: Mapped[int] = mapped_column(ForeignKey("post.id", ondelete="CASCADE"))
 
 
 class Grade(Base):
     __tablename__ = "grade"
 
     id: Mapped[my_id]
-    teacher: Mapped[int] = mapped_column(ForeignKey("person.id", ondelete="CASCADE"))
-    student: Mapped[int] = mapped_column(ForeignKey("person.id", ondelete="CASCADE"))
+    teacher_id: Mapped[int] = mapped_column(ForeignKey("person.id", ondelete="CASCADE"))
+    student_id: Mapped[int] = mapped_column(ForeignKey("person.id", ondelete="CASCADE"))
+    item_id: Mapped[int] = mapped_column(ForeignKey("item.id", ondelete="CASCADE"))
     evaluation: Mapped[int]
     truancy: Mapped[bool]
     date: Mapped[datetime]
