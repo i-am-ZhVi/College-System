@@ -3,6 +3,7 @@ import enum
 #from models.person import Person
 
 from typing import Annotated
+from sqlalchemy import text
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 from sqlalchemy.sql import expression
 from sqlalchemy.sql.schema import ForeignKey
@@ -16,6 +17,11 @@ class Post(Base):
 
     id: Mapped[my_id]
     name: Mapped[str]
+
+    teachers: Mapped[list["Person"]] = relationship(
+        back_populates="teacher_posts",
+        secondary="teacher"
+    )
 
     items: Mapped[list["Item"]] = relationship(
         back_populates="post"
@@ -74,17 +80,23 @@ class Grade(Base):
     teacher_id: Mapped[int] = mapped_column(ForeignKey("person.id", ondelete="CASCADE"))
     student_id: Mapped[int] = mapped_column(ForeignKey("person.id", ondelete="CASCADE"))
     item_id: Mapped[int] = mapped_column(ForeignKey("item.id", ondelete="CASCADE"))
-    evaluation: Mapped[int]
-    truancy: Mapped[bool]
-    date: Mapped[datetime]
+    evaluation: Mapped[int] = mapped_column(nullable=True)
+    truancy: Mapped[bool] = mapped_column(default=False, server_default=expression.false())
+    create_at: Mapped[datetime] = mapped_column(default=datetime.utcnow(), server_default=text("TIMEZONE('utc', now())"))
+    update_at: Mapped[datetime] = mapped_column(default=datetime.utcnow(), server_default=text("TIMEZONE('utc', now())"), onupdate=datetime.utcnow())
     number_couple: Mapped[int]
 
     student: Mapped["Person"] = relationship(
-        back_populates="grades_student"
+        "Person",
+        backref="grades_student",
+        foreign_keys=[student_id]
+
     )
 
     teacher: Mapped["Person"] = relationship(
-        back_populates="grades_teacher"
+        "Person",
+        backref="grades_teacher",
+        foreign_keys=[teacher_id]
     )
 
     item: Mapped["Item"] = relationship(
@@ -99,6 +111,7 @@ class Group(Base):
     name: Mapped[str]
     professions: Mapped[bool] = mapped_column(default=False, server_default=expression.false())
     denominator: Mapped[bool] = mapped_column(default=False, server_default=expression.false())
+    start_year: Mapped[datetime] = mapped_column(default=datetime.utcnow(), server_default=text("TIMEZONE('utc', now())"))
 
     teachers: Mapped[list["Person"]] = relationship(
         back_populates="teacher_groups",

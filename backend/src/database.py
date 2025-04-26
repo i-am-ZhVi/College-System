@@ -16,4 +16,4 @@ class Base(AsyncAttrs, DeclarativeBase):
     __abstract__ = True
 
 
-session = async_sessionmaker(engine)
+Session = async_sessionmaker(engine)

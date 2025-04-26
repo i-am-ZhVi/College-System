@@ -58,9 +58,10 @@ class Channel(Base):
 class Subscriber(Base):
     __tablename__ = "subscriber"
 
-    person_id: Mapped[int] = mapped_column(ForeignKey("person.id", ondelete="CASCADE"), primary_key=True)
-    chat_id: Mapped[int] = mapped_column(ForeignKey("chat.id", ondelete="CASCADE"), primary_key=True)
-    channel_id: Mapped[int] = mapped_column(ForeignKey("channel.id", ondelete="CASCADE"), primary_key=True)
+    id: Mapped[my_id]
+    person_id: Mapped[int] = mapped_column(ForeignKey("person.id", ondelete="CASCADE"))
+    chat_id: Mapped[int] = mapped_column(ForeignKey("chat.id", ondelete="CASCADE"), nullable=True)
+    channel_id: Mapped[int] = mapped_column(ForeignKey("channel.id", ondelete="CASCADE"), nullable=True)
     admin: Mapped[bool] = mapped_column(default=False, server_default=expression.false())
     can_write: Mapped[bool] = mapped_column(default=True, server_default=expression.true())
 
