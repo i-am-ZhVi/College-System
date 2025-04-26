@@ -12,8 +12,8 @@ async def main():
 
     await new_login("Nann", "12efw")
 
-    await new_person("Nann", "Soturnov", "sota")
-    await new_person("Nann", "Notorno", "Keka", True)
+    await new_person(1, "Soturnov", "sota")
+    await new_person(1, "Notorno", "Keka", True)
 
     await new_post("zuza")
     await new_teacher(id_person=2, id_post=1)

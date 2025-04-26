@@ -21,16 +21,12 @@ class Person(Base):
     __tablename__ = "person"
 
     id: Mapped[my_id]
-    login_id: Mapped[int] = mapped_column(ForeignKey("login.login", ondelete="CASCADE"))
+    login_id: Mapped[int] = mapped_column(ForeignKey("login.id", ondelete="CASCADE"))
     surname: Mapped[str]
     name: Mapped[str]
     patronymic: Mapped[str] = mapped_column(nullable=True)
     phone: Mapped[str] = mapped_column(nullable=True)
     role: Mapped[Role] = mapped_column(default=Role.student, server_default="student")
-
-    login: Mapped["Login"] = relationship(
-        back_populates="persons"
-    )
 
     teacher_posts: Mapped[list["Post"]] = relationship(
         back_populates="teachers",
@@ -100,9 +96,6 @@ class Person(Base):
 class Login(Base):
     __tablename__ = "login"
 
-    login: Mapped[str] = mapped_column(primary_key=True)
+    id: Mapped[my_id]
+    login: Mapped[str] = mapped_column(unique=True)
     password: Mapped[str]
-
-    persons: Mapped[list["Person"]] = relationship(
-        back_populates="login"
-    )

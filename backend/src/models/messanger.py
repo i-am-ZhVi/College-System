@@ -78,6 +78,10 @@ class Message(Base):
     channel_id: Mapped[int] = mapped_column(ForeignKey("channel.id"), nullable=True)
     message: Mapped[str]
 
+    files: Mapped[list["File"]] = relationship(
+        back_populates="message"
+    )
+
 
 
 
@@ -97,3 +101,7 @@ class File(Base):
     message_id: Mapped[int] = mapped_column(ForeignKey("message.id", ondelete="CASCADE"))
     path: Mapped[str]
     type_id: Mapped[File_Type] = mapped_column(nullable=True)
+
+    message: Mapped["Message"] = relationship(
+        back_populates="files"
+    )
