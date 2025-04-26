@@ -1,11 +1,12 @@
 import enum
 
 from sqlalchemy.sql import expression
-from sqlalchemy.orm import mapped_column
+from sqlalchemy.orm import mapped_column, relationship
 from sqlalchemy.orm.base import Mapped
 from sqlalchemy.schema import ForeignKey
 from typing import Annotated
 from database import Base
+#from models.person import Person
 
 
 my_id = Annotated[int, mapped_column(primary_key=True)]
@@ -19,6 +20,17 @@ class Chat(Base):
     name: Mapped[str]
     description: Mapped[str]
 
+    creator: Mapped["Person"] = relationship(
+        back_populates="chats"
+    )
+
+    subscribers: Mapped[list["Person"]] = relationship(
+        back_populates="subscribes_on_chats",
+        secondary="subscriber"
+    )
+
+
+
 
 class Channel(Base):
     __tablename__ = "channel"
@@ -29,6 +41,14 @@ class Channel(Base):
     name: Mapped[str]
     description: Mapped[str]
 
+    creator: Mapped["Person"] = relationship(
+        back_populates="channels"
+    )
+
+    subscribers: Mapped[list["Person"]] = relationship(
+        back_populates="subscribes_on_channels",
+        secondary="subscriber"
+    )
 
 
 class Subscriber(Base):

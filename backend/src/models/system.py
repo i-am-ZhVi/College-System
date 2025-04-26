@@ -1,7 +1,9 @@
 import enum
 
+#from models.person import Person
+
 from typing import Annotated
-from sqlalchemy.orm import Mapped, mapped_column
+from sqlalchemy.orm import Mapped, mapped_column, relationship
 from sqlalchemy.sql import expression
 from sqlalchemy.sql.schema import ForeignKey
 from database import Base
@@ -14,6 +16,11 @@ class Post(Base):
 
     id: Mapped[my_id]
     name: Mapped[str]
+
+    items: Mapped[list["Item"]] = relationship(
+        back_populates="post"
+    )
+
 
 class Teacher(Base):
     __tablename__ = "teacher"
@@ -29,6 +36,36 @@ class Item(Base):
     name: Mapped[str]
     post_id: Mapped[int] = mapped_column(ForeignKey("post.id", ondelete="CASCADE"))
 
+    post: Mapped["Post"] = relationship(
+        back_populates="items"
+    )
+
+    grades: Mapped[list["Grade"]] = relationship(
+        back_populates="item"
+    )
+
+    groups: Mapped[list["Group"]] = relationship(
+        back_populates="items",
+        secondary="item_for_group"
+    )
+
+    specialties: Mapped[list["Specialties"]] = relationship(
+        back_populates="item"
+    )
+
+    substitutions_specialties: Mapped[list["Substitutions_Specialties"]] = relationship(
+        back_populates="item"
+    )
+
+    professions_i: Mapped[list["Professions"]] = relationship(
+        back_populates="item"
+    )
+
+    substitutions_professions: Mapped[list["Substitutions_Professions"]] = relationship(
+        back_populates="item"
+    )
+
+
 
 class Grade(Base):
     __tablename__ = "grade"
@@ -42,6 +79,17 @@ class Grade(Base):
     date: Mapped[datetime]
     number_couple: Mapped[int]
 
+    student: Mapped["Person"] = relationship(
+        back_populates="grades_student"
+    )
+
+    teacher: Mapped["Person"] = relationship(
+        back_populates="grades_teacher"
+    )
+
+    item: Mapped["Item"] = relationship(
+        back_populates="grades"
+    )
 
 
 class Group(Base):
@@ -51,6 +99,38 @@ class Group(Base):
     name: Mapped[str]
     professions: Mapped[bool] = mapped_column(default=False, server_default=expression.false())
     denominator: Mapped[bool] = mapped_column(default=False, server_default=expression.false())
+
+    teachers: Mapped[list["Person"]] = relationship(
+        back_populates="teacher_groups",
+        secondary="teacher_to_group"
+    )
+
+    students: Mapped[list["Person"]] = relationship(
+        back_populates="teacher_groups",
+        secondary="student_to_group"
+    )
+
+    items: Mapped[list["Item"]] = relationship(
+        back_populates="groups",
+        secondary="item_for_group"
+    )
+
+    specialties: Mapped[list["Specialties"]] = relationship(
+        back_populates="group"
+    )
+
+    substitutions_specialties: Mapped[list["Substitutions_Specialties"]] = relationship(
+        back_populates="group"
+    )
+
+    professions_i: Mapped[list["Professions"]] = relationship(
+        back_populates="group"
+    )
+
+    substitutions_professions: Mapped[list["Substitutions_Professions"]] = relationship(
+        back_populates="group"
+    )
+
 
 
 class Student_to_Group(Base):
@@ -78,7 +158,12 @@ class Item_for_Group(Base):
 
 class Days(enum.Enum):
     mondey = "Понедельник"
-
+    tuesday = "Вторник"
+    wednesday = "Среда"
+    thursday = "Четверг"
+    friday = "Пятница"
+    saturday = "Суббота"
+    sunday = "Воскресенье"
 
 
 class Specialties(Base):
@@ -93,6 +178,18 @@ class Specialties(Base):
     distance: Mapped[bool] = mapped_column(default=False, server_default=expression.false())
     denominator: Mapped[bool] = mapped_column(default=False, server_default=expression.false())
 
+    teacher: Mapped["Person"] = relationship(
+        back_populates="specialties"
+    )
+
+    group: Mapped["Group"] = relationship(
+        back_populates="specialties"
+    )
+
+    item: Mapped["Item"] = relationship(
+        back_populates="specialties"
+    )
+
 
 class Professions(Base):
     __tablename__ = "professions"
@@ -105,6 +202,19 @@ class Professions(Base):
     number_couple: Mapped[int]
     distance: Mapped[bool] = mapped_column(default=False, server_default=expression.false())
     denominator: Mapped[bool] = mapped_column(default=False, server_default=expression.false())
+
+    teacher: Mapped["Person"] = relationship(
+        back_populates="professions_i"
+    )
+
+    group: Mapped["Group"] = relationship(
+        back_populates="professions_i"
+    )
+
+    item: Mapped["Item"] = relationship(
+        back_populates="professions_i"
+    )
+
 
 
 class Substitutions_Specialties(Base):
@@ -119,6 +229,18 @@ class Substitutions_Specialties(Base):
     distance: Mapped[bool] = mapped_column(default=False, server_default=expression.false())
     denominator: Mapped[bool] = mapped_column(default=False, server_default=expression.false())
 
+    teacher: Mapped["Person"] = relationship(
+        back_populates="substitutions_specialties"
+    )
+
+    group: Mapped["Group"] = relationship(
+        back_populates="substitutions_specialties"
+    )
+
+    item: Mapped["Item"] = relationship(
+        back_populates="substitutions_specialties"
+    )
+
 
 class Substitutions_Professions(Base):
     __tablename__ = "substitutions_professions"
@@ -131,3 +253,15 @@ class Substitutions_Professions(Base):
     number_couple: Mapped[int]
     distance: Mapped[bool] = mapped_column(default=False, server_default=expression.false())
     denominator: Mapped[bool] = mapped_column(default=False, server_default=expression.false())
+
+    teacher: Mapped["Person"] = relationship(
+        back_populates="substitutions_professions"
+    )
+
+    group: Mapped["Group"] = relationship(
+        back_populates="substitutions_professions"
+    )
+
+    item: Mapped["Item"] = relationship(
+        back_populates="substitutions_professions"
+    )

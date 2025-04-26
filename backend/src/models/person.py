@@ -4,6 +4,8 @@ from typing import Annotated
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 from sqlalchemy.sql.schema import ForeignKey
 from database import Base
+#from models.messanger import Channel, Chat
+#from models.system import Grade, Group, Post, Professions, Specialties, Substitutions_Professions, Substitutions_Specialties
 
 
 my_id = Annotated[int, mapped_column(primary_key=True)]
@@ -28,6 +30,68 @@ class Person(Base):
     login: Mapped["Login"] = relationship(
         back_populates="person"
     )
+
+    teacher_posts: Mapped[list["Post"]] = relationship(
+        back_populates="teachers",
+        secondary="teacher"
+    )
+
+    grades_student: Mapped[list["Grade"]] = relationship(
+        back_populates="students"
+    )
+
+    grades_teacher: Mapped[list["Grade"]] = relationship(
+        back_populates="teacher"
+    )
+
+    teacher_groups: Mapped[list["Group"]] = relationship(
+        back_populates="teachers",
+        secondary="teacher_to_group"
+    )
+
+    student_groups: Mapped[list["Group"]] = relationship(
+        back_populates="students",
+        secondary="student_to_group"
+    )
+
+    specialties: Mapped[list["Specialties"]] = relationship(
+        back_populates="teacher"
+    )
+
+    substitutions_specialties: Mapped[list["Substitutions_Specialties"]] = relationship(
+        back_populates="teacher"
+    )
+
+    professions_i: Mapped[list["Professions"]] = relationship(
+        back_populates="teacher"
+    )
+
+    substitutions_professions: Mapped[list["Substitutions_Professions"]] = relationship(
+        back_populates="teacher"
+    )
+
+    chats: Mapped[list["Chat"]] = relationship(
+        back_populates="creator"
+    )
+
+    channels: Mapped[list["Channel"]] = relationship(
+        back_populates="creator"
+    )
+
+    subscribes_on_chats: Mapped[list["Chat"]] = relationship(
+        back_populates="subscribers",
+        secondary="subscriber"
+    )
+
+    subscribes_on_channels: Mapped[list["Channel"]] = relationship(
+        back_populates="subscribers",
+        secondary="subscriber"
+    )
+
+
+
+
+
 
 
 class Login(Base):
