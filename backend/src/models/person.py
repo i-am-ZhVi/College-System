@@ -36,13 +36,15 @@ class Person(Base):
         secondary="teacher"
     )
 
-    grades_student: Mapped[list["Grade"]] = relationship(
-        back_populates="students"
-    )
+    #grades_student: Mapped[list["Grade"]] = relationship(
+    #    "Grade",
+    #    primaryjoin="Grade.student_id == Person.id"
+    #)
 
-    grades_teacher: Mapped[list["Grade"]] = relationship(
-        back_populates="teacher"
-    )
+    #grades_teacher: Mapped[list["Grade"]] = relationship(
+    #    "Grade",
+    #    primaryjoin="Grade.teacher_id == Person.id"
+    #)
 
     teacher_groups: Mapped[list["Group"]] = relationship(
         back_populates="teachers",
@@ -101,6 +103,6 @@ class Login(Base):
     login: Mapped[str] = mapped_column(unique=True)
     password: Mapped[str]
 
-    person: Mapped["Person"] = relationship(
+    person: Mapped[list["Person"]] = relationship(
         back_populates="login"
     )
