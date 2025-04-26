@@ -1,7 +1,7 @@
 import enum
 
 from typing import Annotated
-from sqlalchemy.orm import Mapped, mapped_column
+from sqlalchemy.orm import Mapped, mapped_column, relationship
 from sqlalchemy.sql.schema import ForeignKey
 from database import Base
 
@@ -25,6 +25,10 @@ class Person(Base):
     phone: Mapped[str] = mapped_column(nullable=True)
     role: Mapped[Role] = mapped_column(default=Role.student, server_default="student")
 
+    login: Mapped["Login"] = relationship(
+        back_populates="person"
+    )
+
 
 class Login(Base):
     __tablename__ = "login"
@@ -32,3 +36,7 @@ class Login(Base):
     person_id: Mapped[int] = mapped_column(ForeignKey("person.id", ondelete="CASCADE"), primary_key=True)
     login: Mapped[str] = mapped_column(unique=True)
     password: Mapped[str]
+
+    person: Mapped["Person"] = relationship(
+        back_populates="login"
+    )
