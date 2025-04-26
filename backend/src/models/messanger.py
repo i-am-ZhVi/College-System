@@ -1,11 +1,15 @@
+import asyncio
 import enum
 
+from sqlalchemy import func, text
+from sqlalchemy.event import listen
 from sqlalchemy.sql import expression
 from sqlalchemy.orm import mapped_column, relationship
 from sqlalchemy.orm.base import Mapped
 from sqlalchemy.schema import ForeignKey
 from typing import Annotated
-from database import Base
+from database import Base, Session
+from datetime import datetime
 #from models.person import Person
 
 
@@ -65,12 +69,16 @@ class Message(Base):
     __tablename__ = "message"
 
     id: Mapped[my_id]
-    id_chat_message: Mapped[int]
+    created_at: Mapped[datetime] = mapped_column(server_default=text("TIMEZONE('utc', now())"))
+    created_at: Mapped[datetime] = mapped_column(server_default=text("TIMEZONE('utc', now())"), onupdate=datetime.utcnow)
     sender_id: Mapped[int] = mapped_column(ForeignKey("person.id"))
     recipient_id: Mapped[int] = mapped_column(ForeignKey("person.id"), nullable=True)
     chat_id: Mapped[int] = mapped_column(ForeignKey("chat.id"), nullable=True)
     channel_id: Mapped[int] = mapped_column(ForeignKey("channel.id"), nullable=True)
     message: Mapped[str]
+
+
+
 
 
 
