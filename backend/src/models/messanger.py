@@ -76,7 +76,7 @@ class Message(Base):
     recipient_id: Mapped[int] = mapped_column(ForeignKey("person.id"), nullable=True)
     chat_id: Mapped[int] = mapped_column(ForeignKey("chat.id"), nullable=True)
     channel_id: Mapped[int] = mapped_column(ForeignKey("channel.id"), nullable=True)
-    message: Mapped[str]
+    message: Mapped[str] = mapped_column(nullable=True)
 
     files: Mapped[list["File"]] = relationship(
         back_populates="message"
