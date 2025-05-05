@@ -1,16 +1,15 @@
-import asyncio
 import enum
 
-from sqlalchemy import func, text
-from sqlalchemy.event import listen
+from sqlalchemy import text
 from sqlalchemy.sql import expression
 from sqlalchemy.orm import mapped_column, relationship
 from sqlalchemy.orm.base import Mapped
 from sqlalchemy.schema import ForeignKey
 from typing import Annotated
-from database import Base, Session
+from database import Base
 from datetime import datetime
-#from models.person import Person
+
+from models.site import News_Page
 
 
 my_id = Annotated[int, mapped_column(primary_key=True)]
@@ -19,7 +18,7 @@ class Chat(Base):
     __tablename__ = "chat"
 
     id: Mapped[my_id]
-    icon_path: Mapped[str] = mapped_column(nullable=True)
+    icon_id: Mapped[int] = mapped_column(ForeignKey("file.id"), nullable=True)
     creator_id: Mapped[int] = mapped_column(ForeignKey("person.id", ondelete="CASCADE"))
     name: Mapped[str]
     description: Mapped[str]
@@ -33,6 +32,10 @@ class Chat(Base):
         secondary="subscriber"
     )
 
+    icon: Mapped["File"] = relationship(
+        back_populates="chats"
+    )
+
 
 
 
@@ -40,7 +43,7 @@ class Channel(Base):
     __tablename__ = "channel"
 
     id: Mapped[my_id]
-    icon_path: Mapped[str] = mapped_column(nullable=True)
+    icon_id: Mapped[int] = mapped_column(ForeignKey("file.id"), nullable=True)
     creator_id: Mapped[int] = mapped_column(ForeignKey("person.id", ondelete="CASCADE"))
     name: Mapped[str]
     description: Mapped[str]
@@ -52,6 +55,10 @@ class Channel(Base):
     subscribers: Mapped[list["Person"]] = relationship(
         back_populates="subscribes_on_channels",
         secondary="subscriber"
+    )
+
+    icon: Mapped["File"] = relationship(
+        back_populates="channels"
     )
 
 
@@ -71,7 +78,7 @@ class Message(Base):
 
     id: Mapped[my_id]
     created_at: Mapped[datetime] = mapped_column(server_default=text("TIMEZONE('utc', now())"))
-    created_at: Mapped[datetime] = mapped_column(server_default=text("TIMEZONE('utc', now())"), onupdate=datetime.utcnow)
+    update_at: Mapped[datetime] = mapped_column(server_default=text("TIMEZONE('utc', now())"), onupdate=datetime.utcnow)
     sender_id: Mapped[int] = mapped_column(ForeignKey("person.id"))
     recipient_id: Mapped[int] = mapped_column(ForeignKey("person.id"), nullable=True)
     chat_id: Mapped[int] = mapped_column(ForeignKey("chat.id"), nullable=True)
@@ -79,13 +86,9 @@ class Message(Base):
     message: Mapped[str] = mapped_column(nullable=True)
 
     files: Mapped[list["File"]] = relationship(
-        back_populates="message"
+        back_populates="messages",
+        secondary="file_in_message"
     )
-
-
-
-
-
 
 
 class File_Type(enum.Enum):
@@ -98,10 +101,34 @@ class File(Base):
     __tablename__ = "file"
 
     id: Mapped[my_id]
-    message_id: Mapped[int] = mapped_column(ForeignKey("message.id", ondelete="CASCADE"))
-    path: Mapped[str]
-    type_id: Mapped[File_Type] = mapped_column(nullable=True)
+    name: Mapped[str]
+    type: Mapped[File_Type] = mapped_column(nullable=True)
 
-    message: Mapped["Message"] = relationship(
-        back_populates="files"
+    messages: Mapped[list["Message"]] = relationship(
+        back_populates="files",
+        secondary="file_in_message"
     )
+
+    persons: Mapped[list["Person"]] = relationship(
+        back_populates="icon"
+    )
+
+    chats: Mapped[list["Chat"]] = relationship(
+        back_populates="icon"
+    )
+
+    channels: Mapped[list["Channel"]] = relationship(
+        back_populates="icon"
+    )
+
+    pages: Mapped[list["News_Page"]] = relationship(
+        back_populates="files",
+        secondary="file_to_main_page"
+    )
+
+
+class File_in_Message(Base):
+    __tablename__ = "file_in_message"
+
+    file_id: Mapped[int] = mapped_column(ForeignKey("file.id"), primary_key=True)
+    message_id: Mapped[int] = mapped_column(ForeignKey("message.id"), primary_key=True)

@@ -4,8 +4,6 @@ from typing import Annotated
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 from sqlalchemy.sql.schema import ForeignKey
 from database import Base
-#from models.messanger import Channel, Chat
-#from models.system import Grade, Group, Post, Professions, Specialties, Substitutions_Professions, Substitutions_Specialties
 
 
 my_id = Annotated[int, mapped_column(primary_key=True)]
@@ -22,6 +20,7 @@ class Person(Base):
 
     id: Mapped[my_id]
     login_id: Mapped[int] = mapped_column(ForeignKey("login.id", ondelete="CASCADE"))
+    icon_id: Mapped[int] = mapped_column(ForeignKey("file.id"), nullable=True)
     surname: Mapped[str]
     name: Mapped[str]
     patronymic: Mapped[str] = mapped_column(nullable=True)
@@ -33,15 +32,9 @@ class Person(Base):
         secondary="teacher"
     )
 
-    #grades_student: Mapped[list["Grade"]] = relationship(
-    #    "Grade",
-    #    primaryjoin="Grade.student_id == Person.id"
-    #)
-
-    #grades_teacher: Mapped[list["Grade"]] = relationship(
-    #    "Grade",
-    #    primaryjoin="Grade.teacher_id == Person.id"
-    #)
+    icon: Mapped["File"] = relationship(
+        back_populates="persons"
+    )
 
     teacher_groups: Mapped[list["Group"]] = relationship(
         back_populates="teachers",

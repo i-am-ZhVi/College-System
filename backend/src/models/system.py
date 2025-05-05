@@ -33,6 +33,7 @@ class Teacher(Base):
 
     person_id: Mapped[int] = mapped_column(ForeignKey("person.id", ondelete="CASCADE"), primary_key=True)
     post_id: Mapped[int] = mapped_column(ForeignKey("post.id", ondelete="CASCADE"), primary_key=True)
+    mail: Mapped[str] = mapped_column(nullable=True)
 
 
 class Item(Base):

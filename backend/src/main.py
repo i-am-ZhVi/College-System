@@ -30,7 +30,7 @@ async def main():
     await new_message(1, 2, "hey")
     await new_message(2, 1, "hi")
 
-    await new_file(2, "/sda/sa")
+    await new_file("hello.png", "image")
 
 
     await new_item("math", 1)

@@ -70,10 +70,10 @@ async def new_channel(id_creator, name, desc):
             session.add(channel)
 
 
-async def new_file(message_id, path):
+async def new_file(name, type):
     async with Session() as session:
         async with session.begin():
-            file = File(message_id=message_id, path=path)
+            file = File(name=name, type=type)
             session.add(file)
 
 
