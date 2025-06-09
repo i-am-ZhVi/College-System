@@ -13,7 +13,7 @@ class LoginGet(LoginPost):
 
 class PersonPost(BaseModel):
     login_id: int
-    icon_id: int
+    icon_id: int | None
     surname: str
     name: str
     patronymic: str | None
