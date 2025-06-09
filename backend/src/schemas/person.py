@@ -27,8 +27,8 @@ class PersonGet(PersonPost):
 class PersonRel(PersonGet):
     posts: list["PostGet"]
     icon: "FileGet"
-    teacher_groups: List["GroupGet"]
-    strudent_groups: List["GroupGet"]
+    teacher_groups: list["GroupGet"]
+    strudent_groups: list["GroupGet"]
     specialties: list["SpecialtiesGet"]
     substitutions_specialties: list["Substitutions_SpecialtiesGet"]
     professions: list["ProfessionsGet"]
