@@ -1,10 +1,11 @@
+from typing_extensions import Optional
 from pydantic import BaseModel
 from datetime import datetime
 
 from models.messanger import File_Type
 
 class ChatPost(BaseModel):
-    icon_id: int
+    icon_id: int | None
     creator_id: int
     name: str
     description: str
@@ -15,11 +16,11 @@ class ChatGet(ChatPost):
 class ChatRel(ChatGet):
     creator: "PersonGet"
     subscribers: list["PersonGet"]
-    icon: "FileGet"
+    icon: Optional["FileGet"] = None
 
 
 class ChannelPost(BaseModel):
-    icon_id: int
+    icon_id: int | None
     creator_id: int
     name: str
     description: str

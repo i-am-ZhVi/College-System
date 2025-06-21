@@ -1,3 +1,4 @@
+from typing_extensions import Optional
 from pydantic import BaseModel
 
 from models.person import Role
@@ -25,13 +26,13 @@ class PersonGet(PersonPost):
 
 
 class PersonRel(PersonGet):
-    posts: list["PostGet"]
-    icon: "FileGet"
+    teacher_posts: list["PostGet"]
+    icon: Optional["FileGet"] = None
     teacher_groups: list["GroupGet"]
-    strudent_groups: list["GroupGet"]
+    strudent_groups: Optional[list["GroupGet"]] = None
     specialties: list["SpecialtiesGet"]
     substitutions_specialties: list["Substitutions_SpecialtiesGet"]
-    professions: list["ProfessionsGet"]
+    professions_i: list["ProfessionsGet"]
     substitutions_professions: list["Substitutions_ProfessionsGet"]
     chats: list["ChatGet"]
     channels: list["ChannelGet"]

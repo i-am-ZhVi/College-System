@@ -45,7 +45,8 @@ async def main():
 
     await add_item_to_group(1, 1)
 
-
+    print(await get_Person(1))
+    print(await get_Chat(1))
 
 
 
