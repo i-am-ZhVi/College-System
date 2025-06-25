@@ -10,6 +10,7 @@ my_id = Annotated[int, mapped_column(primary_key=True)]
 
 
 class Role(enum.Enum):
+    admin = "admin"
     head = "head"
     teacher = "teacher"
     student = "student"
