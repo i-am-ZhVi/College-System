@@ -71,16 +71,6 @@ class Person(Base):
         back_populates="creator"
     )
 
-    subscribes_on_chats: Mapped[list["Chat"]] = relationship(
-        back_populates="subscribers",
-        secondary="subscriber"
-    )
-
-    subscribes_on_channels: Mapped[list["Channel"]] = relationship(
-        back_populates="subscribers",
-        secondary="subscriber"
-    )
-
 
 
 

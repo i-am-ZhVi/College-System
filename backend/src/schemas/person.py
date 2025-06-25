@@ -36,5 +36,3 @@ class PersonRel(PersonGet):
     substitutions_professions: list["Substitutions_ProfessionsGet"]
     chats: list["ChatGet"]
     channels: list["ChannelGet"]
-    subscribes_on_chats: list["ChatGet"]
-    subscribes_on_channels: list["ChannelGet"]

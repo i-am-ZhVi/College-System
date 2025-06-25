@@ -27,11 +27,6 @@ class Chat(Base):
         back_populates="chats"
     )
 
-    subscribers: Mapped[list["Person"]] = relationship(
-        back_populates="subscribes_on_chats",
-        secondary="subscriber"
-    )
-
     icon: Mapped["File"] = relationship(
         back_populates="chats"
     )
@@ -50,11 +45,6 @@ class Channel(Base):
 
     creator: Mapped["Person"] = relationship(
         back_populates="channels"
-    )
-
-    subscribers: Mapped[list["Person"]] = relationship(
-        back_populates="subscribes_on_channels",
-        secondary="subscriber"
     )
 
     icon: Mapped["File"] = relationship(

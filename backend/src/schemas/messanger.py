@@ -15,7 +15,6 @@ class ChatGet(ChatPost):
 
 class ChatRel(ChatGet):
     creator: "PersonGet"
-    subscribers: list["PersonGet"]
     icon: Optional["FileGet"] = None
 
 
@@ -30,7 +29,6 @@ class ChannelGet(ChannelPost):
 
 class ChannelRel(ChannelGet):
     creator: "PersonGet"
-    subscribers: list["PersonGet"]
     icon: "FileGet"
 
 
