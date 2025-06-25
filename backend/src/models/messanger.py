@@ -66,7 +66,8 @@ class Subscriber(Base):
     __tablename__ = "subscriber"
 
     id: Mapped[my_id]
-    person_id: Mapped[int] = mapped_column(ForeignKey("person.id", ondelete="CASCADE"))
+    subscriber_id: Mapped[int] = mapped_column(ForeignKey("person.id", ondelete="CASCADE"))
+    person_id: Mapped[int] = mapped_column(ForeignKey("person.id", ondelete="CASCADE"), nullable=True)
     chat_id: Mapped[int] = mapped_column(ForeignKey("chat.id", ondelete="CASCADE"), nullable=True)
     channel_id: Mapped[int] = mapped_column(ForeignKey("channel.id", ondelete="CASCADE"), nullable=True)
     admin: Mapped[bool] = mapped_column(default=False, server_default=expression.false())

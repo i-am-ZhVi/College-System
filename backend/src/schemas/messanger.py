@@ -35,7 +35,8 @@ class ChannelRel(ChannelGet):
 
 
 class SubscriberPost(BaseModel):
-    person_id: int
+    subrscriber_id: int
+    person_id: int | None
     chat_id: int | None
     channel_id: int | None
     admin: bool
