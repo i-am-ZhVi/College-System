@@ -6,7 +6,7 @@ from sqlalchemy.orm import mapped_column, relationship
 from sqlalchemy.orm.base import Mapped
 from sqlalchemy.schema import ForeignKey
 from typing import Annotated
-from database import Base
+from db import Base
 from datetime import datetime
 
 from models.site import News_Page

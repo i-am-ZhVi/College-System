@@ -7,7 +7,7 @@ from sqlalchemy import text
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 from sqlalchemy.sql import expression
 from sqlalchemy.sql.schema import ForeignKey
-from database import Base
+from db import Base
 from datetime import datetime
 
 my_id = Annotated[int, mapped_column(primary_key=True)]

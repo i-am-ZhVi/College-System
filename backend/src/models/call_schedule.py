@@ -2,7 +2,7 @@
 from datetime import datetime
 from sqlalchemy.orm import mapped_column, Mapped
 from sqlalchemy.sql import expression
-from database import Base
+from db import Base
 
 
 

@@ -1,7 +1,8 @@
 import asyncio
+import uvicorn
 
-from queries.orm import *
-
+from queries import *
+from api.v1.endpoints.person import *
 
 async def main():
     await recreates_tables()
@@ -45,10 +46,18 @@ async def main():
 
     await add_item_to_group(1, 1)
 
-    print(await get_Person(1))
-    print(await get_Chat(1))
+    print(await get_person(1))
+    print(await get_chat(1))
+    print(await get_persons())
 
 
+
+
+app = create_fastapi_app()
 
 if __name__ == "__main__":
     asyncio.run(main())
+    uvicorn.run(
+        app="main:app",
+        reload=True
+    )

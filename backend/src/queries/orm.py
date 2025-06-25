@@ -1,19 +1,11 @@
 from sqlalchemy.orm import selectinload
 
 from sqlalchemy import select
-from database import Base, engine, Session
-from models.messanger import *
-from models.person import *
-from models.system import *
+from db import Base, engine, Session
 
-from schemas.call_schedule import *
-from schemas.site import *
-from schemas.messanger import *
-from schemas.system import *
-from schemas.person import *
+from models import *
+from schemas import *
 
-PersonRel.model_rebuild()
-ChatRel.model_rebuild()
 
 
 async def recreates_tables():
@@ -149,37 +141,8 @@ async def add_item_to_group(item_id, group_id):
             session.add(item_group)
 
 
-async def get_Person(id: int) -> PersonRel:
-    async with Session() as session:
-            query = (
-                select(Person)
-                .options(
-                    selectinload(Person.channels),
-                    selectinload(
-                    Person.chats),selectinload(
-                    Person.teacher_posts),selectinload(
-                    Person.icon),selectinload(
-                    Person.teacher_groups),selectinload(
-                    Person.student_groups),selectinload(
-                    Person.subscribes_on_channels),selectinload(
-                    Person.specialties),selectinload(
-                    Person.professions_i),selectinload(
-                    Person.substitutions_specialties),selectinload(
-                    Person.substitutions_professions),selectinload(
-                    Person.subscribes_on_channels),selectinload(
-                    Person.subscribes_on_chats))
-                .where(Person.id == id)
-            )
 
-            res = await session.execute(query)
-            result_orm = res.scalars().first()
-
-
-            result_dto = PersonRel.model_validate(result_orm, from_attributes=True)
-            return result_dto
-
-
-async def get_Chat(id: int) -> ChatRel:
+async def get_chat(id: int) -> ChatRel | None:
     async with Session() as session:
             query = (
                 select(Chat)
@@ -194,6 +157,8 @@ async def get_Chat(id: int) -> ChatRel:
             res = await session.execute(query)
             result_orm = res.scalars().first()
 
+            if (result_orm == None):
+                return None
 
             result_dto = ChatRel.model_validate(result_orm, from_attributes=True)
             return result_dto
