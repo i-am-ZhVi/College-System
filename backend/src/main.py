@@ -2,6 +2,7 @@ import asyncio
 import uvicorn
 
 from queries import *
+from api import *
 from api.v1.endpoints.person import *
 
 async def main():
@@ -46,14 +47,10 @@ async def main():
 
     await add_item_to_group(1, 1)
 
-    print(await get_person(1))
-    print(await get_chat(1))
-    print(await get_persons())
+    await get_persons()
 
 
 
-
-app = create_fastapi_app()
 
 if __name__ == "__main__":
     asyncio.run(main())

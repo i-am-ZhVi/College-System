@@ -1,36 +1,43 @@
+from fastapi.routing import APIRouter
 from queries import *
-from fastapi import FastAPI
-from fastapi.middleware.cors import CORSMiddleware
+from typing import Union
+
+from api import app
 
 
-def create_fastapi_app():
-    app = FastAPI()
-    app.add_middleware(
-        CORSMiddleware,
-        allow_origins=["*"],
-    )
+persons_router = APIRouter(prefix="/person", tags=["persons"])
 
-    @app.get("/")
-    async def api_main():
-        return "hello"
 
-    @app.get("/persons")
-    async def api_get_persons():
-        persons = await get_persons()
 
-        response = {
-            "data": persons
-        }
-        return response
+@persons_router.post("/new_person")
+async def api_post_person(person: PersonPost):
+    return person
 
-    @app.get("/person")
-    async def api_get_person(id: int):
-        person = await get_person(id)
 
-        response = {
-            "data": person
-        }
+@persons_router.get("/personsRelationships")
+async def api_get_persons_rel(id: Union[int, None] = None, login_id: Union[int, None] = None, surname: Union[str, None] = None,
+    name: Union[str, None] = None, patronymic: Union[str, None] = None,
+    phone: Union[str, None] = None, role: Union[Role, None] = None):
+    persons = await get_persons_rel(id=id, login_id=login_id, surname=surname,
+        name=name, patronymic=patronymic, phone=phone, role=role)
 
-        return response
+    response = {
+        "data": persons
+    }
+    return response
 
-    return app
+@persons_router.get("/persons")
+async def api_get_persons(id: Union[int, None] = None, login_id: Union[int, None] = None, surname: Union[str, None] = None,
+    name: Union[str, None] = None, patronymic: Union[str, None] = None,
+    phone: Union[str, None] = None, role: Union[Role, None] = None):
+    person = await get_persons(id=id, login_id=login_id, surname=surname,
+        name=name, patronymic=patronymic, phone=phone, role=role)
+
+    response = {
+        "data": person
+    }
+
+    return response
+
+
+app.include_router(persons_router)

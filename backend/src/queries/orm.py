@@ -1,7 +1,7 @@
 from sqlalchemy.orm import selectinload
-
 from sqlalchemy import select
-from db import Base, engine, Session
+
+from db import *
 
 from models import *
 from schemas import *
@@ -78,10 +78,10 @@ async def new_file(name, type):
             session.add(file)
 
 
-async def new_subscriber(person_id, chat_id):
+async def new_subscriber(subscriber_id, chat_id):
     async with Session() as session:
         async with session.begin():
-            subs = Subscriber(person_id=person_id, chat_id=chat_id)
+            subs = Subscriber(subscriber_id=subscriber_id, chat_id=chat_id)
             session.add(subs)
 
 
