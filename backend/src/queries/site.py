@@ -22,8 +22,8 @@ async def get_News(id: Union[int, None] = None) -> list[News_PageGet]:
         result_orm = res.scalars().all()
 
 
-        result_dmo = [News_PageGet.model_validate(news, from_attributes=True) for news in result_orm]
-        return result_dmo
+        result_dto = [News_PageGet.model_validate(news, from_attributes=True) for news in result_orm]
+        return result_dto
 
 
 async def get_NewsRelationships(id: Union[int, None] = None) -> list[News_PageGet]:
@@ -41,5 +41,5 @@ async def get_NewsRelationships(id: Union[int, None] = None) -> list[News_PageGe
         res = await session.execute(query)
         result_orm = res.scalars().all()
 
-        result_dmo = [News_PageGet.model_validate(news, from_attributes=True) for news in result_orm]
-        return result_dmo
+        result_dto = [News_PageGet.model_validate(news, from_attributes=True) for news in result_orm]
+        return result_dto

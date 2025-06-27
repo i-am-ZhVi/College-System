@@ -8,7 +8,7 @@ news_router = APIRouter(prefix="/news", tags=["news"])
 
 @news_router.get("/news_pages")
 async def api_get_news_pages(id: Union[int, None] = None):
-    news_pages = await get_News(id)
+    news_pages = await get_News(id=id)
 
     return {
         "data": news_pages
@@ -17,7 +17,7 @@ async def api_get_news_pages(id: Union[int, None] = None):
 
 @news_router.get("/news_pagesRelationships")
 async def api_get_news_pagesRelationships(id: Union[int, None] = None):
-    news_pages = await get_NewsRelationships(id)
+    news_pages = await get_NewsRelationships(id=id)
 
     return {
         "data": news_pages
